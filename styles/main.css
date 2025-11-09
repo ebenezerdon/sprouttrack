@@ -27,7 +27,7 @@ body { font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system
 
 /* Sidebar slide on small screens */
 @media (max-width: 639px) {
-  #sidebar { position: fixed; inset: 70px 16px auto 16px; z-index: 50; }
+  #sidebar { position: fixed; inset: 70px 16px auto 16px; z-index: 50; max-height: calc(100vh - 100px); overflow: auto; }
 }
 
 /* Table responsiveness tweaks */

@@ -201,6 +201,11 @@
     $('#editChildBtn').on('click', function(){ const c = getSelectedChild(); if (c) openChildModal('edit', c); });
     $('#closeChildModal, #cancelChildBtn').on('click', function(){ closeChildModal(); });
 
+    // Close on backdrop click
+    $('#childModal').on('click', function(e){ if (e.target === this) { closeChildModal(); } });
+    // Close on ESC key
+    $(document).on('keydown', function(e){ if (e.key === 'Escape') { closeChildModal(); } });
+
     // Child form submit
     $('#childForm').on('submit', function(e){
       e.preventDefault();

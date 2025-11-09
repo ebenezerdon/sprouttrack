@@ -29,20 +29,20 @@
         </div>
         <span class="text-xl font-extrabold tracking-tight">SproutTrack</span>
       </a>
-      <div class="hidden md:flex items-center gap-3">
+      <button id="mobileNavToggle" class="md:hidden btn-ghost" aria-expanded="false" aria-controls="mobileNav" aria-label="Toggle navigation">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor"><path d="M4 6h16v2H4V6Zm0 5h16v2H4v-2Zm0 5h16v2H4v-2Z"/></svg>
       </button>
-      <div class="flex items-center gap-3">
+      <div class="hidden md:flex items-center gap-3">
         <a href="#features" class="btn-ghost">Features</a>
+        <a href="app.html" class="btn-primary">Launch the tracker</a>
+      </div>
+    </nav>
     <div id="mobileNav" class="md:hidden hidden mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-4">
       <div class="mt-2 flex flex-col gap-2">
         <a href="#features" class="btn-ghost w-full justify-start">Features</a>
         <a href="app.html" class="btn-primary w-full">Launch the tracker</a>
       </div>
     </div>
-        <a href="app.html" class="btn-primary">Launch the tracker</a>
-      </div>
-    </nav>
 
     <section id="top" class="relative overflow-hidden">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -134,7 +134,6 @@
                     </div>
                   </div>
                 </div>
-    <section id="features" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             </figure>
           </div>
         </div>
@@ -144,7 +143,7 @@
 
   <main class="mt-24">
     <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="relative">
+    <section id="features" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="absolute -z-10 -top-8 -left-6 h-36 w-36 rounded-full bg-sky-200/50 blur-2xl"></div>
         <div class="absolute -z-10 -bottom-14 -right-8 h-40 w-40 rounded-full bg-orange-200/50 blur-2xl"></div>
         <div class="max-w-3xl">
