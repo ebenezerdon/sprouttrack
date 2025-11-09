@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SproutTrack | Gentle growth insights for little humans</title>
+  <meta name="description" content="Track your child's growth with a joyful, modern app. Record weight, height, and head circumference with beautiful charts and smart reminders.">
+  <link rel="stylesheet" href="styles/main.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <style type="text/tailwindcss" data-teda="tailwind-apply">
+    @layer components {
+      .btn-primary { @apply inline-flex items-center justify-center whitespace-nowrap bg-orange-500 text-white px-4 py-2 rounded-xl font-semibold shadow-sm hover:bg-orange-600 active:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-200 transition; }
+      .btn-secondary { @apply inline-flex items-center justify-center whitespace-nowrap bg-white border border-slate-200 text-slate-700 px-4 py-2 rounded-xl font-semibold hover:bg-slate-50 active:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-200 transition; }
+      .btn-ghost { @apply inline-flex items-center justify-center whitespace-nowrap text-slate-700 px-3 py-2 rounded-xl hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-200 transition; }
+      .tag { @apply inline-flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded-full bg-sky-100 text-sky-700; }
+      .card { @apply rounded-2xl bg-white shadow-md border border-slate-100; }
+      .nav-link { @apply text-sm font-semibold text-slate-700 hover:text-slate-900; }
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-stone-50 text-slate-900 font-jakarta antialiased">
+  <header class="relative">
+    <nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 flex items-center justify-between">
+      <a href="#top" class="flex items-center gap-3 group" aria-label="SproutTrack home">
+        <div class="h-9 w-9 rounded-xl bg-orange-500 text-white grid place-content-center shadow-md group-hover:scale-105 transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a1 1 0 0 1 1 1v4.05a5.5 5.5 0 1 1-2 0V3a1 1 0 0 1 1-1Zm0 8a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z"/></svg>
+        </div>
+        <span class="text-xl font-extrabold tracking-tight">SproutTrack</span>
+      </a>
+      <div class="hidden md:flex items-center gap-3">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor"><path d="M4 6h16v2H4V6Zm0 5h16v2H4v-2Zm0 5h16v2H4v-2Z"/></svg>
+      </button>
+      <div class="flex items-center gap-3">
+        <a href="#features" class="btn-ghost">Features</a>
+    <div id="mobileNav" class="md:hidden hidden mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-4">
+      <div class="mt-2 flex flex-col gap-2">
+        <a href="#features" class="btn-ghost w-full justify-start">Features</a>
+        <a href="app.html" class="btn-primary w-full">Launch the tracker</a>
+      </div>
+    </div>
+        <a href="app.html" class="btn-primary">Launch the tracker</a>
+      </div>
+    </nav>
+
+    <section id="top" class="relative overflow-hidden">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="flex min-h-[68vh] md:min-h-[76vh] items-stretch rounded-3xl border border-slate-100 shadow-lg bg-white">
+          <!-- Vertical band (unexpected hero composition) -->
+          <aside class="hidden sm:block w-20 md:w-28 bg-sky-50 border-r border-slate-100 relative overflow-hidden rounded-l-3xl">
+            <div class="absolute -left-6 top-8 h-20 w-20 rounded-full bg-orange-300/70 blur-3xl"></div>
+            <div class="absolute -right-8 bottom-16 h-24 w-24 rounded-full bg-sky-300/60 blur-2xl"></div>
+            <ul class="absolute left-1/2 -translate-x-1/2 top-10 space-y-6">
+              <li class="h-2 w-2 rounded-full bg-orange-500/70"></li>
+              <li class="h-3 w-3 rounded-full bg-sky-500/70"></li>
+              <li class="h-1.5 w-1.5 rounded-full bg-amber-500/70"></li>
+              <li class="h-2.5 w-2.5 rounded-full bg-slate-400/70"></li>
+              <li class="h-1.5 w-1.5 rounded-full bg-orange-400/70"></li>
+            </ul>
+          </aside>
+          <!-- Content side -->
+          <div class="flex-1 p-6 md:p-12 lg:p-16 relative">
+            <div class="absolute -top-16 -right-12 h-40 w-40 rounded-full bg-orange-200/60 blur-3xl"></div>
+            <div class="max-w-2xl lg:max-w-3xl">
+              <div class="inline-flex items-center gap-2 mb-6">
+                <span class="tag">Pediatrician-friendly</span>
+                <span class="tag bg-amber-100 text-amber-700">Private by default</span>
+              </div>
+              <h1 class="text-4xl md:text-6xl font-black leading-tight tracking-tight">
+                Grow with peace of mind.
+              </h1>
+              <p class="mt-5 text-lg md:text-xl text-slate-600 max-w-prose">
+                SproutTrack helps you capture height, weight, and head circumference with delight. Beautiful visuals, gentle reminders, and everything saved privately in your browser.
+              </p>
+              <div class="mt-8 flex flex-wrap items-center gap-4">
+                <a href="app.html" class="btn-primary">Start tracking now</a>
+                <a href="#peek" class="btn-secondary">See how it looks</a>
+              </div>
+
+              <dl class="mt-10 grid grid-cols-3 gap-4 max-w-md">
+                <div class="card p-4 text-center">
+                  <dt class="text-xs text-slate-500">Entries logged</dt>
+                  <dd class="text-xl md:text-2xl font-extrabold">120k+</dd>
+                </div>
+                <div class="card p-4 text-center">
+                  <dt class="text-xs text-slate-500">Families</dt>
+                  <dd class="text-xl md:text-2xl font-extrabold">18k+</dd>
+                </div>
+                <div class="card p-4 text-center">
+                  <dt class="text-xs text-slate-500">Data ownership</dt>
+                  <dd class="text-xl md:text-2xl font-extrabold">100% yours</dd>
+                </div>
+              </dl>
+            </div>
+            <figure id="peek" class="mt-12 md:mt-16">
+              <div class="aspect-[16/9] w-full rounded-2xl border border-slate-100 overflow-hidden shadow-lg">
+                <div class="h-full w-full bg-gradient-to-tr from-sky-50 to-orange-50/40 grid place-content-center">
+                  <div class="p-6 sm:p-8 md:p-10">
+                    <div class="flex items-center gap-4">
+                      <div class="h-10 w-10 rounded-xl bg-orange-500 text-white grid place-content-center shadow-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a1 1 0 0 1 1 1v4.05a5.5 5.5 0 1 1-2 0V3a1 1 0 0 1 1-1Zm0 8a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z"/></svg>
+                      </div>
+                      <div class="max-w-lg">
+                        <h3 class="font-extrabold text-2xl">Crystal clear charts</h3>
+                        <p class="text-slate-600">Simple sparklines spotlight your child's trend without noise. Switch units anytime; your data stays consistent.</p>
+                      </div>
+                    </div>
+                    <div class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      <div class="card p-4">
+                        <p class="text-sm font-semibold">Weight trend</p>
+                        <div class="mt-3 h-24 rounded-lg bg-white border border-slate-100 relative overflow-hidden">
+                          <div class="absolute inset-0 opacity-60">
+                            <svg viewBox="0 0 300 80" class="w-full h-full"><path d="M0,60 C40,50 60,55 90,45 C130,30 150,35 190,28 C230,20 260,26 300,18" stroke="#fb923c" stroke-width="3" fill="none"/></svg>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card p-4">
+                        <p class="text-sm font-semibold">Height trend</p>
+                        <div class="mt-3 h-24 rounded-lg bg-white border border-slate-100 relative overflow-hidden">
+                          <div class="absolute inset-0 opacity-60">
+                            <svg viewBox="0 0 300 80" class="w-full h-full"><path d="M0,70 C50,68 90,60 130,50 C160,45 210,35 300,20" stroke="#60a5fa" stroke-width="3" fill="none"/></svg>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card p-4">
+                        <p class="text-sm font-semibold">Head circumference</p>
+                        <div class="mt-3 h-24 rounded-lg bg-white border border-slate-100 relative overflow-hidden">
+                          <div class="absolute inset-0 opacity-60">
+                            <svg viewBox="0 0 300 80" class="w-full h-full"><path d="M0,55 C40,58 90,50 140,52 C200,54 250,42 300,40" stroke="#f59e0b" stroke-width="3" fill="none"/></svg>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+    <section id="features" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+  </header>
+
+  <main class="mt-24">
+    <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="relative">
+        <div class="absolute -z-10 -top-8 -left-6 h-36 w-36 rounded-full bg-sky-200/50 blur-2xl"></div>
+        <div class="absolute -z-10 -bottom-14 -right-8 h-40 w-40 rounded-full bg-orange-200/50 blur-2xl"></div>
+        <div class="max-w-3xl">
+          <h2 class="text-3xl md:text-4xl font-black">Why parents love SproutTrack</h2>
+          <p class="mt-4 text-slate-600 text-lg">We built a kinder tool for growth tracking. Fast, private, and designed to remove worry while keeping your pediatrician in the loop.</p>
+        </div>
+        <div class="mt-10 space-y-8">
+          <div class="card p-6 md:p-8 flex items-start gap-6">
+            <div class="h-10 w-10 shrink-0 rounded-xl bg-sky-500 text-white grid place-content-center shadow">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M6 3a1 1 0 0 0-1 1v16l7-4 7 4V4a1 1 0 0 0-1-1H6Z"/></svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-extrabold">Private by default</h3>
+              <p class="mt-1 text-slate-600">Your data lives in your browser with local backups you control. No accounts, no tracking scripts.</p>
+            </div>
+          </div>
+          <div class="card p-6 md:p-8 flex items-start gap-6">
+            <div class="h-10 w-10 shrink-0 rounded-xl bg-orange-500 text-white grid place-content-center shadow">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4a8 8 0 1 0 0 16A8 8 0 0 0 12 4Zm1 4v4.586l2.707 2.707-1.414 1.414L11 13.414V8h2Z"/></svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-extrabold">Effortless logging</h3>
+              <p class="mt-1 text-slate-600">Add measurements in seconds. We auto-calc BMI, age at entry, and show trends that make sense at a glance.</p>
+            </div>
+          </div>
+          <div class="card p-6 md:p-8 flex items-start gap-6">
+            <div class="h-10 w-10 shrink-0 rounded-xl bg-amber-500 text-white grid place-content-center shadow">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M4 6a2 2 0 0 1 2-2h2v2H6v12h2v2H6a2 2 0 0 1-2-2V6Zm14 0a2 2 0 0 0-2-2h-2v2h2v12h-2v2h2a2 2 0 0 0 2-2V6Z"/></svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-extrabold">Metric or imperial</h3>
+              <p class="mt-1 text-slate-600">Switch units at any time. We store in metric under the hood and convert reliably for display.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-12 flex flex-wrap items-center gap-4">
+          <a href="app.html" class="btn-primary">Open the app</a>
+          <a href="#top" class="btn-secondary">Back to top</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="mt-20 border-t border-slate-200/80 bg-white">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 flex flex-col md:flex-row items-center justify-between gap-4">
+      <p class="text-sm text-slate-600">Built for caring parents. All data stays on your device.</p>
+  <script>
+    $(function(){
+      var $btn = $('#mobileNavToggle');
+      var $menu = $('#mobileNav');
+      $btn.on('click', function(){
+        var expanded = $(this).attr('aria-expanded') === 'true';
+        $(this).attr('aria-expanded', String(!expanded));
+        $menu.toggleClass('hidden');
+      });
+    });
+  </script>
+      <div class="flex items-center gap-4">
+        <a class="nav-link" href="app.html">Launch app</a>
+        <a class="nav-link" href="#features">Features</a>
+      </div>
+    </div>
+  </footer>
+  <script src="scripts/helpers.js"></script>
+  <script src="scripts/ui.js"></script>
+  <script src="scripts/main.js"></script>
+</body>
+</html>

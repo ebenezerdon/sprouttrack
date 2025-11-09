@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SproutTrack App</title>
+  <meta name="description" content="Track child growth with weight, height, and head circumference. Private, fast, and beautiful.">
+  <link rel="stylesheet" href="styles/main.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-stone-50 text-slate-900 font-jakarta antialiased">
+  <header class="bg-white border-b border-slate-100 sticky top-0 z-40">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3" aria-label="Go to landing">
+        <div class="h-9 w-9 rounded-xl bg-orange-500 text-white grid place-content-center shadow">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a1 1 0 0 1 1 1v4.05a5.5 5.5 0 1 1-2 0V3a1 1 0 0 1 1-1Zm0 8a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z"/></svg>
+        </div>
+        <span class="font-extrabold tracking-tight">SproutTrack</span>
+      </a>
+      <div class="flex items-center gap-2 sm:gap-3">
+        <button id="toggleSidebar" class="btn-ghost sm:hidden" aria-expanded="false" aria-controls="sidebar">Children</button>
+        <button id="unitToggle" class="btn-secondary" aria-label="Toggle units">Units: <span id="unitLabel" class="ml-1">Metric</span></button>
+        <button id="exportBtn" class="btn-secondary" aria-label="Export data">Export</button>
+        <label for="importInput" class="btn-secondary cursor-pointer" aria-label="Import data">Import</label>
+        <input id="importInput" type="file" accept="application/json" class="sr-only">
+      </div>
+    </div>
+  </header>
+
+  <style type="text/tailwindcss" data-teda="tailwind-apply">
+    @layer components {
+      .btn-primary { @apply inline-flex items-center justify-center whitespace-nowrap bg-orange-500 text-white px-4 py-2 rounded-xl font-semibold shadow-sm hover:bg-orange-600 active:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-200 transition; }
+      .btn-secondary { @apply inline-flex items-center justify-center whitespace-nowrap bg-white border border-slate-200 text-slate-700 px-4 py-2 rounded-xl font-semibold hover:bg-slate-50 active:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-200 transition; }
+      .btn-ghost { @apply inline-flex items-center justify-center whitespace-nowrap text-slate-700 px-3 py-2 rounded-xl hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-200 transition; }
+      .input { @apply w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-200; }
+      .label { @apply block text-xs font-semibold text-slate-600 mb-1; }
+      .card { @apply rounded-2xl bg-white shadow-md border border-slate-100; }
+      .chip { @apply inline-flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded-full bg-sky-100 text-sky-700; }
+      .tab-btn { @apply px-3 py-1.5 rounded-lg text-sm font-semibold text-slate-600 hover:bg-slate-50 focus:ring-2 focus:ring-slate-200; }
+      .tab-btn-active { @apply bg-slate-900 text-white hover:bg-slate-900; }
+    }
+  </style>
+
+  <main class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
+    <div class="grid grid-cols-1 lg:grid-cols-[320px,1fr] gap-6">
+      <!-- Sidebar -->
+      <aside id="sidebar" class="card p-4 lg:sticky lg:top-20 h-max hidden sm:block" aria-label="Children profiles">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="font-extrabold text-lg">Children</h2>
+          <button id="addChildBtn" class="btn-primary text-sm">Add child</button>
+        </div>
+        <ul id="childrenList" class="space-y-2" role="list"></ul>
+      </aside>
+
+      <!-- Main content -->
+      <section class="space-y-6">
+        <!-- Active child header -->
+        <div id="activeChildHeader" class="card p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div class="flex items-center gap-4">
+            <div id="childAvatar" class="h-12 w-12 rounded-xl grid place-content-center text-white font-extrabold shadow"></div>
+            <div>
+              <h3 id="childName" class="text-xl font-extrabold">No child selected</h3>
+              <p id="childMeta" class="text-sm text-slate-600"></p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <button id="editChildBtn" class="btn-secondary text-sm">Edit</button>
+            <button id="deleteChildBtn" class="btn-ghost text-sm">Remove</button>
+          </div>
+        </div>
+
+        <!-- Quick stats and chart previews -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="card p-4">
+            <div class="flex items-center justify-between">
+              <p class="text-sm font-semibold">Weight</p>
+              <span class="chip">kg / lb</span>
+            </div>
+            <div id="sparkWeight" class="mt-2 h-24 w-full"></div>
+          </div>
+          <div class="card p-4">
+            <div class="flex items-center justify-between">
+              <p class="text-sm font-semibold">Height</p>
+              <span class="chip">cm / in</span>
+            </div>
+            <div id="sparkHeight" class="mt-2 h-24 w-full"></div>
+          </div>
+          <div class="card p-4">
+            <div class="flex items-center justify-between">
+              <p class="text-sm font-semibold">Head circumference</p>
+              <span class="chip">cm / in</span>
+            </div>
+            <div id="sparkHead" class="mt-2 h-24 w-full"></div>
+          </div>
+        </div>
+
+        <!-- Add measurement form -->
+        <div class="card p-5">
+          <h4 class="text-lg font-extrabold">Add a measurement</h4>
+          <form id="measurementForm" class="mt-4 grid grid-cols-1 md:grid-cols-5 gap-3" autocomplete="off">
+            <div>
+              <label class="label" for="mDate">Date</label>
+              <input id="mDate" type="date" class="input" required>
+            </div>
+            <div>
+              <label class="label" for="mWeight">Weight (<span class="weightUnitLabel">kg</span>)</label>
+              <input id="mWeight" type="number" step="0.01" min="0" class="input" placeholder="e.g. 7.2">
+            </div>
+            <div>
+              <label class="label" for="mHeight">Height (<span class="heightUnitLabel">cm</span>)</label>
+              <input id="mHeight" type="number" step="0.1" min="0" class="input" placeholder="e.g. 65.5">
+            </div>
+            <div>
+              <label class="label" for="mHead">Head (<span class="headUnitLabel">cm</span>)</label>
+              <input id="mHead" type="number" step="0.1" min="0" class="input" placeholder="e.g. 42.0">
+            </div>
+            <div class="flex items-end">
+              <button class="btn-primary w-full" type="submit">Save entry</button>
+            </div>
+            <div class="md:col-span-5">
+              <label class="label" for="mNotes">Notes (optional)</label>
+              <input id="mNotes" type="text" maxlength="120" class="input" placeholder="Clinic visit, milestones, feeding changes...">
+            </div>
+          </form>
+        </div>
+
+        <!-- Table of measurements -->
+        <div class="card p-5">
+          <div class="flex items-center justify-between gap-3 flex-wrap">
+            <h4 class="text-lg font-extrabold">History</h4>
+            <div class="flex items-center gap-2">
+              <select id="rangeFilter" class="input w-40">
+                <option value="all">All time</option>
+                <option value="6m">Last 6 months</option>
+                <option value="12m">Last 12 months</option>
+              </select>
+              <button id="clearAllBtn" class="btn-ghost text-sm">Clear all</button>
+            </div>
+          </div>
+          <div class="mt-4 overflow-x-auto">
+            <table class="min-w-full text-sm">
+              <thead>
+                <tr class="text-left text-slate-500">
+                  <th class="py-2 pr-4">Date</th>
+                  <th class="py-2 pr-4">Age</th>
+                  <th class="py-2 pr-4">Weight</th>
+                  <th class="py-2 pr-4">Height</th>
+                  <th class="py-2 pr-4">Head</th>
+                  <th class="py-2 pr-4">BMI</th>
+                  <th class="py-2 pr-4">Notes</th>
+                  <th class="py-2 pr-4">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="measurementsTbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Add/Edit Child Modal -->
+  <div id="childModal" class="fixed inset-0 hidden items-center justify-center bg-slate-900/40 p-4" role="dialog" aria-modal="true" aria-labelledby="childModalTitle">
+    <div class="card w-full max-w-md p-5">
+      <div class="flex items-center justify-between">
+        <h3 id="childModalTitle" class="text-lg font-extrabold">Add child</h3>
+        <button id="closeChildModal" class="btn-ghost" aria-label="Close">Close</button>
+      </div>
+      <form id="childForm" class="mt-4 grid grid-cols-1 gap-3">
+        <input type="hidden" id="childId">
+        <div>
+          <label class="label" for="childNameInput">Name</label>
+          <input id="childNameInput" class="input" required maxlength="40" placeholder="e.g. Noah">
+        </div>
+        <div>
+          <label class="label" for="childBirthInput">Birthdate</label>
+          <input id="childBirthInput" type="date" class="input" required>
+        </div>
+        <div>
+          <label class="label" for="childSexInput">Sex</label>
+          <select id="childSexInput" class="input">
+            <option value="unspecified">Prefer not to say</option>
+            <option value="female">Female</option>
+            <option value="male">Male</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div>
+          <label class="label" for="childColorInput">Avatar color</label>
+          <select id="childColorInput" class="input">
+            <option value="#fb923c">Tangerine</option>
+            <option value="#60a5fa">Sky</option>
+            <option value="#f59e0b">Amber</option>
+            <option value="#0ea5e9">Cyan</option>
+            <option value="#334155">Slate</option>
+          </select>
+        </div>
+        <div class="pt-2 flex items-center justify-end gap-2">
+          <button type="button" class="btn-ghost" id="cancelChildBtn">Cancel</button>
+          <button type="submit" class="btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer class="mt-10 pb-10 text-center text-xs text-slate-500">Data is stored locally in your browser. Remember to export for safekeeping.</footer>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="scripts/helpers.js"></script>
+  <script src="scripts/ui.js"></script>
+  <script src="scripts/main.js"></script>
+</body>
+</html>
